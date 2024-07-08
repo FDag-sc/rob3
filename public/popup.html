@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>My Chrome Extension</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="popup.css" />
+    </head>
+    <body>
+        <div id="page1">
+            <h2 class="title">Ultime Notizie</h2>
+            <div id="news-feed">
+                <!-- News items will be added here dynamically -->
+            </div>
+            <div class="search-container">
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Inserire contract ID..."
+                />
+                <button id="search-button" class="button">Ricerca</button>
+            </div>
+        </div>
+        <div id="page2" class="hidden">
+            <h2 class="title">Risultati</h2>
+            <div class="score">
+                <div class="score-circle">9.5</div>
+                TRUST SCORE
+            </div>
+            <
+            <div id="search-result">
+                <!-- Results will be added here dynamically -->
+            </div>
+            <button id="goBack">Go Back</button>
+        </div>
+        <button id="more-info-button" class="button">Scopri di più</button>
+
+        <script src="popup.js"></script>
+    </body>
+</html>

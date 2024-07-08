@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    margin: 0;
+    background-color: #f4f4f4;
+    min-width: 300px; /* Minimum width to prevent squishing */
+}
+
+#page1,
+#page2 {
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0%);
+}
+
+.hidden {
+    display: none;
+    transform: translateX(100%);
+}
+
+.move-left {
+    transform: translateX(-100%);
+}
+
+.title {
+    margin: 0px;
+    text-align: center;
+}
+
+.news-item {
+    text-decoration: none;
+    color: white;
+    display: block;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 10px;
+        height: auto;
+        cursor: pointer;
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+
+        .content {
+            z-index: 1;
+            text-align: center;
+
+            .title {
+                margin: 0;
+                font-size: 15px;
+            }
+
+            .date {
+                margin-top: 10px;
+                margin-bottom: 0px;
+                font-size: 11px;
+            }
+        }
+
+        .icon {
+            z-index: 1;
+            width: 40px;
+            height: auto;
+        }
+    }
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    #search-input {
+        width: 75%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px; /* Rounded input field */
+    }
+
+    #search-button {
+        width: 25%;
+        background-color: #007bff;
+
+        &:hover {
+            background-color: #0056b3;
+        }
+    }
+}
+
+#more-info-button {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #483285;
+
+    &:hover {
+        background-color: #2d1e57;
+    }
+}
+
+.button {
+    padding: 8px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded buttons */
+    transition: background-color 0.3s ease;
+}
+
+.score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .score-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid #4caf50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+}
