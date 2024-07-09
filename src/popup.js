@@ -1,5 +1,10 @@
 import { audit } from './audit.js';
 
+const contract = {
+    id: '0x1234567890abcdef1234567890abcdef12345678',
+    score: '10',
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     (async () => {
         const feedItems = await fetchRSSFeed();
@@ -105,42 +110,33 @@ function updatePopup(feedItems) {
 }
 
 function searchContract(contractId) {
-    let auditResult = audit(contractId);
+    audit(contractId)
+        .then((contract) => {
+            // Update the DOM elements with the contract data
+            document.getElementById('contractID').textContent = contract.id;
+            document.getElementById('trustScore').textContent =
+                contract.trustScore + '%'; // assuming score is a percentage
+            document.getElementById('riskLevel').textContent =
+                contract.riskLevel;
+            document.getElementById('riskDesc').textContent = contract.riskDesc;
 
-    const searchResult = document.getElementById('search-result');
-    searchResult.innerHTML = ''; // Clear the list for search results
+            // Handle warnings dynamically
+            const warningsList = document.getElementById('warningList');
+            const warningsDiv = document.querySelector('.warnings');
+            warningsList.innerHTML = ''; // Clear existing warnings
 
-    if (auditResult) {
-        const div = document.createElement('div');
-        div.className = 'result-item';
-        // Circle with trust score
-        const scoreCircle = document.createElement('div');
-        scoreCircle.className = 'score-circle';
-        scoreCircle.textContent = auditResult.riskScore;
-        div.appendChild(scoreCircle);
-
-        // Contract ID and validity
-        const contractInfo = document.createElement('p');
-        contractInfo.textContent = `Contract: ${contractId}`;
-        div.appendChild(contractInfo);
-
-        // List of problems found
-        const problems = document.createElement('p');
-        problems.textContent = `Findings: ${auditResult.findings}`;
-        div.appendChild(problems);
-
-        // Risk type
-        const riskType = document.createElement('p');
-        riskType.textContent = `Risk Level: ${auditResult.recommendation}`;
-        div.appendChild(riskType);
-
-        // Description
-        const description = document.createElement('p');
-        description.textContent = `Description: ${auditResult.recommendation}`;
-        div.appendChild(description);
-
-        searchResult.appendChild(div);
-    } else {
-        searchResult.textContent = 'Something went wrong.';
-    }
+            if (contract.warnings && contract.warnings.length > 0) {
+                contract.warnings.forEach((warning) => {
+                    const li = document.createElement('li');
+                    li.textContent = warning;
+                    warningsList.appendChild(li);
+                });
+                warningsDiv.style.display = 'block'; // Show warnings if there are any
+            } else {
+                warningsDiv.style.display = 'none'; // Hide warnings div if there are no warnings
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching contract data:', error);
+        });
 }

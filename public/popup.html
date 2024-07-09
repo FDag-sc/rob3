@@ -22,16 +22,34 @@
             </div>
         </div>
         <div id="page2" class="hidden">
-            <h2 class="title">Risultati</h2>
-            <div class="score">
-                <div class="score-circle">9.5</div>
-                TRUST SCORE
+            <div class="header">
+                <button id="goBack" class="button">
+                    <img
+                        src="icons/left-arrow.svg"
+                        alt="Left Arrow"
+                        class="icon"
+                    />
+                    Indietro
+                </button>
             </div>
-            <
-            <div id="search-result">
-                <!-- Results will be added here dynamically -->
+            <div class="contract-id">
+                <h2>Contract ID</h2>
+                <p id="contractID"></p>
             </div>
-            <button id="goBack">Go Back</button>
+            <div class="trust-score">
+                <span class="label">Trust Score</span>
+                <div id="trustScore" class="circle"></div>
+            </div>
+            <div class="warnings">
+                <h3>Warnings</h3>
+                <ul id="warningList">
+                    <!-- Dynamic warnings will be appended here -->
+                </ul>
+            </div>
+            <div class="description">
+                <h3 id="riskLevel"></h3>
+                <p id="riskDesc"></p>
+            </div>
         </div>
         <button id="more-info-button" class="button">Scopri di più</button>
 

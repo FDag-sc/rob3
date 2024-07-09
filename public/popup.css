@@ -13,7 +13,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
     transform: translateX(100%);
 }
 
@@ -119,12 +119,42 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.score {
+#page2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
 
-    .score-circle {
+.header {
+    width: 100%;
+
+    #goBack {
+        display: flex;
+        align-items: center;
+        background-color: #007bff;
+    }
+
+    .icon {
+        width: 25px;
+        height: auto;
+    }
+}
+
+.contract-id h2 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.trust-score {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .label {
+        margin-right: 20px;
+    }
+
+    .circle {
         width: 80px;
         height: 80px;
         border-radius: 50%;
@@ -134,5 +164,30 @@ body {
         justify-content: center;
         font-weight: bold;
         font-size: 20px;
+    }
+}
+
+.warnings {
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background-color: #ffc107;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+}
+
+.description {
+    h3 {
+        color: #333;
+    }
+
+    p {
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-left: 5px solid #007bff;
     }
 }
