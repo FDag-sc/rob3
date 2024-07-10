@@ -2,10 +2,11 @@
 
 My Chrome Extension
 
-## Features
+## TO RUN
 
-- Feature 1
-- Feature 2
+- npm run watch
+- Go to chrome://extensions
+- Load unpacked pointing to the build folder
 
 ## Install
 
