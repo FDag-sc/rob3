@@ -1,7 +1,9 @@
 import { Connection, PublicKey, Transaction } from '@solana/web3.js';
+console.log(Connection, PublicKey, Transaction);
 
-const SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
-const connection = new Connection(SOLANA_RPC_URL, 'confirmed');
+const SOLANA_RPC_URL = 'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
+const connection = new Connection(SOLANA_RPC_URL);
+console.log(connection);
 const TOTAL_RISK_SCORE = 10;
 
 async function getProgramInfo(programId) {
