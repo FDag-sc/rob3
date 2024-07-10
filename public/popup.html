@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="popup.css" />
     </head>
     <body>
-        <div id="page1">
+        <div id="page1" class="page active">
             <h2 class="title">Ultime Notizie</h2>
             <div id="news-feed">
                 <!-- News items will be added here dynamically -->
@@ -21,7 +21,7 @@
                 <button id="search-button" class="button">Ricerca</button>
             </div>
         </div>
-        <div id="page2" class="hidden">
+        <div id="page2" class="page">
             <div class="header">
                 <button id="goBack" class="button">
                     <img
@@ -37,17 +37,17 @@
                 <p id="contractID"></p>
             </div>
             <div class="trust-score">
-                <span class="label">Trust Score</span>
+                <h2>Trust Score</h2>
                 <div id="trustScore" class="circle"></div>
             </div>
             <div class="warnings">
-                <h3>Warnings</h3>
+                <h2>Warnings</h2>
                 <ul id="warningList">
                     <!-- Dynamic warnings will be appended here -->
                 </ul>
             </div>
             <div class="description">
-                <h3 id="riskLevel"></h3>
+                <h2 id="riskLevel"></h2>
                 <p id="riskDesc"></p>
             </div>
         </div>

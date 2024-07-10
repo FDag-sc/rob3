@@ -1,36 +1,41 @@
 import { audit } from './audit.js';
 
-const contract = {
-    id: '0x1234567890abcdef1234567890abcdef12345678',
-    score: '10',
-};
-
 document.addEventListener('DOMContentLoaded', function () {
     (async () => {
         const feedItems = await fetchRSSFeed();
         updatePopup(feedItems);
     })();
+    var homePage = document.getElementById('page1');
+    var searchPage = document.getElementById('page2');
     document
         .getElementById('search-button')
-        .addEventListener('click', function () {
-            searchContract(
-                document.getElementById('search-input').value.trim()
-            );
-            const page1 = document.getElementById('page1');
-            const page2 = document.getElementById('page2');
+        .addEventListener('click', async function () {
+            const input = document.getElementById('search-input').value.trim();
 
-            page1.classList.add('move-left');
-            page2.classList.remove('hidden');
-            // Reset for smooth backward animation
-            setTimeout(() => page1.classList.add('hidden'), 500);
+            // Disable the button to prevent multiple clicks during processing
+            this.disabled = true;
+
+            // Call the async function and wait for it to complete
+            await auditContract(input);
+
+            homePage.classList.remove('active');
+            searchPage.style.display = '';
+
+            setTimeout(() => {
+                searchPage.classList.add('active');
+                homePage.style.display = 'none';
+            }, 500);
+            // Re-enable the button after the process is complete
+            this.disabled = false;
         });
     document.getElementById('goBack').addEventListener('click', function () {
-        const page1 = document.getElementById('page1');
-        const page2 = document.getElementById('page2');
-
-        page1.classList.remove('hidden', 'move-left');
-        // Ensure that the transition occurs smoothly
-        setTimeout(() => page2.classList.add('hidden'), 500);
+        searchPage.classList.remove('active');
+        homePage.style.display = '';
+        setTimeout(() => {
+            // Set display none after transition ends to hide the page
+            searchPage.style.display = 'none';
+            homePage.classList.add('active');
+        }, 500);
     });
     document
         .getElementById('more-info-button')
@@ -109,7 +114,7 @@ function updatePopup(feedItems) {
     });
 }
 
-function searchContract(contractId) {
+async function auditContract(contractId) {
     audit(contractId)
         .then((contract) => {
             // Update the DOM elements with the contract data

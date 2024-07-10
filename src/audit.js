@@ -19,7 +19,7 @@ function isValidPublicKey(input) {
 
 function toScorePct(riskScore) {
     let temp = TOTAL_RISK_SCORE - riskScore;
-    return Math.round((temp / TOTAL_RISK_SCORE) * 100);
+    return Math.round((temp / TOTAL_RISK_SCORE) * 100).toString();
 }
 
 function getRiskLevel(riskScore) {
@@ -165,6 +165,18 @@ async function auditTransaction(rawTransaction) {
 }
 
 async function audit(input) {
+    //MOCKED
+    /*return {
+        id: input,
+        trustScore: '95',
+        riskLevel: 'Low Risk',
+        riskDesc: 'Non molti problemi, ma fai attenzione.',
+        warnings: [
+            'Transazione con molte istruzioni',
+            'Impossibile simulare la transazione',
+        ],
+    };*/
+
     let riskScore, warnings;
     if (isValidPublicKey(input)) {
         ({ score, warnings } = await auditProgram(input));
@@ -174,11 +186,12 @@ async function audit(input) {
 
     return {
         id: input,
-        riskScore: toScorePct(riskScore),
+        trustScore: toScorePct(riskScore),
         riskLevel: getRiskLevel(riskScore),
         riskDesc: getRiskDesc(riskScore),
-        warnings: warnings
+        warnings: warnings,
     };
 }
 
+//ESEMPIO 9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
 export { audit };
