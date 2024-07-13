@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.setAttribute('pattern', '^[A-Za-z0-9]{40,45}$');
                 input.title = 'Insert a valid Program ID.';
             } else if (searchType === 'transaction') {
-                input.setAttribute('pattern', '^[A-Za-z0-9]{88}$');
+                input.setAttribute('pattern', '^[A-Za-z0-9]{80,90}$');
                 input.title = 'Insert a valid Transaction ID.';
             }
 

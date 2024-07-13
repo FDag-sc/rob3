@@ -1,6 +1,8 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 
-const SOLANA_RPC_URL = 'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
+// Solana connection configuration
+const SOLANA_RPC_URL =
+    'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
 const connection = new Connection(SOLANA_RPC_URL);
 const TOTAL_RISK_SCORE = 10;
 
@@ -30,11 +32,10 @@ function getRiskLevel(riskScore) {
 
 // Provide risk description based on score
 function getRiskDesc(riskScore) {
-    if (riskScore > 7)
-        return 'Attenta revisione fortemente raccomandata.';
-    if (riskScore > 4) return 'Ulteriore revisione raccomandata.';
-    if (riskScore > 2) return 'Non molti problemi, ma fai attenzione.';
-    return 'Sembra sicuro, in ogni caso verifica.';
+    if (riskScore > 7) return 'Careful review strongly recommended.';
+    if (riskScore > 4) return 'Further review recommended.';
+    if (riskScore > 2) return 'Not many issues, but exercise caution.';
+    return 'Seems safe, but always verify.';
 }
 
 // Function for program audit
@@ -42,53 +43,61 @@ async function auditProgram(programId) {
     let riskScore = 0;
     let warnings = [];
 
-    // 1. Verifica l'esistenza del programma
-    if (!programInfo) {
-        riskScore += 10;
-        warnings.push('Programma non trovato');
-        return { riskScore, warnings };
-    }
+    try {
+        const programInfo = await getProgramInfo(programId);
 
-    // 2. Dimensione del programma
-    if (programInfo.data.length < 100) {
-        riskScore += 2;
-        warnings.push('Dimensione del programma molto ridotta');
-    }
+        // 1. Verifica l'esistenza del programma
+        if (!programInfo) {
+            riskScore += 10;
+            warnings.push('Program not found');
+            return { riskScore, warnings };
+        }
 
-    // 3. Eseguibilità
-    if (!programInfo.executable) {
-        riskScore += 3;
-        warnings.push('Il programma non è eseguibile');
-    }
+        // 2. Dimensione del programma
+        if (programInfo.data.length < 100) {
+            riskScore += 2;
+            warnings.push('Very small program size');
+        }
 
-    // 4. Età del programma
-    const slot = await connection.getSlot();
-    const blockTime = await connection.getBlockTime(slot);
-    const programAge = blockTime - programInfo.rentEpoch;
-    if (programAge < 86400) {
-        // meno di un giorno
-        riskScore += 2;
-        warnings.push('Programma molto recente');
-    }
+        // 3. Eseguibilità
+        if (!programInfo.executable) {
+            riskScore += 3;
+            warnings.push('Program is not executable');
+        }
 
-    // 5. Frequenza delle transazioni
-    const recentSignatures = await connection.getSignaturesForAddress(
-        new PublicKey(programId),
-        { limit: 1000 }
-    );
-    const txFrequency = recentSignatures.length / (programAge / 86400);
-    if (txFrequency > 100) {
-        // più di 100 tx al giorno
-        riskScore += 1;
-        warnings.push('Alta frequenza di transazioni');
-    }
+        // 4. Età del programma
+        const slot = await connection.getSlot();
+        const blockTime = await connection.getBlockTime(slot);
+        const programAge = blockTime - programInfo.rentEpoch;
+        if (programAge < 86400) {
+            // meno di un giorno
+            riskScore += 2;
+            warnings.push('Very recent program');
+        }
 
-    // 6. Saldo del programma
-    const balance = await connection.getBalance(new PublicKey(programId));
-    if (balance > 1000 * 1e9) {
-        // più di 1000 SOL
-        riskScore += 2;
-        warnings.push('Saldo del programma molto elevato');
+        // 5. Frequenza delle transazioni
+        const recentSignatures = await connection.getSignaturesForAddress(
+            new PublicKey(programId),
+            { limit: 1000 }
+        );
+        const txFrequency = recentSignatures.length / (programAge / 86400);
+        if (txFrequency > 100) {
+            // più di 100 tx al giorno
+            riskScore += 1;
+            warnings.push('High transaction frequency');
+        }
+
+        // 6. Saldo del programma
+        const balance = await connection.getBalance(new PublicKey(programId));
+        if (balance > 1000 * 1e9) {
+            // più di 1000 SOL
+            riskScore += 2;
+            warnings.push('Very high program balance');
+        }
+    } catch (error) {
+        console.error('Error in auditProgram:', error);
+        riskScore = 10;
+        warnings.push('Error auditing program: ' + error.message);
     }
 
     return { riskScore, warnings };
@@ -99,20 +108,37 @@ async function auditTransaction(transactionSignature) {
     let riskScore = 0;
     let warnings = [];
 
-    // 1. Numero di istruzioni
-    if (transaction.instructions.length > 5) {
-        riskScore += 2;
-        warnings.push('Transazione con molte istruzioni');
-    }
+    try {
+        const transaction = await connection.getTransaction(
+            transactionSignature,
+            {
+                maxSupportedTransactionVersion: 0,
+            }
+        );
 
-    // 2. Numero di firmatari
-    if (transaction.signatures.length > 1) {
-        riskScore += 2;
-        warnings.push('Transazione con più firmatari');
-    }
+        if (!transaction) {
+            riskScore += 10;
+            warnings.push('Transaction not found');
+            return { riskScore, warnings };
+        }
 
-    // 3. Analisi delle istruzioni
-    /*for (let instruction of transaction.instructions) {
+        // 1. Numero di istruzioni
+        const instructionsLength =
+            transaction.transaction?.message?.instructions?.length;
+        if (instructionsLength && instructionsLength > 5) {
+            riskScore += 2;
+            warnings.push('Transaction with many instructions');
+        }
+
+        // 2. Numero di firmatari
+        const signaturesLength = transaction.transaction?.signatures?.length;
+        if (signaturesLength && signaturesLength > 1) {
+            riskScore += 2;
+            warnings.push('Transaction with multiple signers');
+        }
+
+        // 3. Analisi delle istruzioni
+        /*for (let instruction of transaction.instructions) {
         const programId = instruction.programId.toBase58();
         console.log('Instruction program ID:', programId);
 
@@ -133,31 +159,44 @@ async function auditTransaction(transactionSignature) {
         }
     }*/
 
-    // 4. Simula la transazione
-    try {
-        const simulation = await connection.simulateTransaction(transaction);
-        if (simulation.value.err) {
-            riskScore += 3;
-            warnings.push('Simulazione transazione fallita');
-        }
+        // 4. Simula la transazione
+        if (transaction.meta?.postBalances && transaction.meta?.preBalances) {
+            const balanceChanges = transaction.meta.postBalances.map(
+                (post, index) => {
+                    return post - (transaction.meta.preBalances[index] || 0);
+                }
+            );
 
-        // Analizza i cambiamenti di saldo dalla simulazione
-        if (simulation.value.accounts) {
-            const largeBalanceChanges = simulation.value.accounts.filter(
-                (account) => Math.abs(account.lamports) > 100 * 1e9 // più di 100 SOL
+            const largeBalanceChanges = balanceChanges.filter(
+                (change) => Math.abs(change) > 100 * 1e9
             ).length;
             if (largeBalanceChanges > 0) {
                 riskScore += 3;
-                warnings.push('Simulazione con elevati spostamenti di saldo');
+                warnings.push('Transaction with large balance shifts');
             }
         }
 
-        if (warnings.length === 0) {
-            warnings.push('No specific issues detected');
+        if (transaction.meta?.err) {
+            riskScore += 3;
+            warnings.push('Transaction simulation failed');
+        }
+
+        if (transaction.meta?.logMessages) {
+            const suspiciousLogs = transaction.meta.logMessages.filter(
+                (log) =>
+                    log.includes('error') ||
+                    log.includes('failed') ||
+                    log.includes('invalid')
+            );
+            if (suspiciousLogs.length > 0) {
+                riskScore += 2;
+                warnings.push('Suspicious log messages detected');
+            }
         }
     } catch (error) {
-        riskScore += 6;
-        warnings.push('Impossibile simulare la transazione');
+        console.error('Error in auditTransaction:', error);
+        riskScore = 10;
+        warnings.push('Error processing transaction: ' + error.message);
     }
 
     return { riskScore, warnings };
@@ -172,23 +211,33 @@ async function audit(type, input) {
         } else if (type === 'transaction') {
             ({ riskScore, warnings } = await auditTransaction(input));
         } else {
-            throw new Error('Invalid audit type. Use "program" or "transaction".');
+            throw new Error(
+                'Invalid audit type. Use "program" or "transaction".'
+            );
         }
 
-    return {
-        id: input,
-        trustScore: toScorePct(riskScore),
-        riskLevel: getRiskLevel(riskScore),
-        riskDesc: getRiskDesc(riskScore),
-        warnings: warnings,
-    };
+        return {
+            id: input,
+            trustScore: toScorePct(riskScore),
+            riskLevel: getRiskLevel(riskScore),
+            riskDesc: getRiskDesc(riskScore),
+            warnings: warnings,
+        };
+    } catch (error) {
+        console.error('Error in audit:', error);
+        return {
+            id: input,
+            trustScore: '0',
+            riskLevel: 'High Risk',
+            riskDesc: 'Error occurred during audit',
+            warnings: ['Audit failed: ' + error.message],
+        };
+    }
 }
 
-//ESEMPIO 9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
 export { audit };
 
 // Tx examples
-// 5m8iahwGDcGcBRUwbPUo6SRTSnJm4htgAjcL8bmCudcmButCcG9JHhBdArrYJMyaud1NMYdUpAMfme8BcWfF79W4
 // 5m8iahwGDcGcBRUwbPUo6SRTSnJm4htgAjcL8bmCudcmButCcG9JHhBdArrYJMyaud1NMYdUpAMfme8BcWfF79W4
 // Program ex
 // 9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
