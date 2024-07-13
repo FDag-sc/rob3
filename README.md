@@ -1,6 +1,7 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> Rob3
+# <img src="public/icons/icon.png" width="45" align="left"> Rob3
 
-My Chrome Extension
+Web 2.5 Checker\
+Rob3 is a 'Web 2.5 Checker', a new browser extension designed to protect users through an artificial intelligence model that guides users in truly understanding the risks they are taking. In a world that tends to be fully automated, in our region, we necessarily need a bridge that connects a reality that relies on intermediation with one where it will be absent or nearly so
 
 ## TO RUN
 
@@ -12,11 +13,6 @@ My Chrome Extension
 
 [**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
 
-## Contribution
-
-Suggestions and pull requests are welcomed!.
-
 ---
 
 This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
-

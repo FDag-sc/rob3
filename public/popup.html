@@ -17,8 +17,31 @@
                     type="text"
                     id="search-input"
                     placeholder="Inserire contract ID..."
+                    required
                 />
-                <button id="search-button" class="button">Ricerca</button>
+                <div id="error-message" style="color: red; display: none"></div>
+                <div class="search-options">
+                    <label class="option">
+                        <input
+                            type="radio"
+                            id="program"
+                            name="searchType"
+                            value="program"
+                            checked
+                        />
+                        <span>Program</span>
+                    </label>
+                    <label class="option">
+                        <input
+                            type="radio"
+                            id="transaction"
+                            name="searchType"
+                            value="transaction"
+                        />
+                        <span>Transaction</span>
+                    </label>
+                    <button id="search-button" class="button">Ricerca</button>
+                </div>
             </div>
         </div>
         <div id="page2" class="page">

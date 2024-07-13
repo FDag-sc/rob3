@@ -1,22 +1,11 @@
 import { Connection, PublicKey, Transaction } from '@solana/web3.js';
-console.log(Connection, PublicKey, Transaction);
 
 const SOLANA_RPC_URL = 'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
 const connection = new Connection(SOLANA_RPC_URL);
-console.log(connection);
 const TOTAL_RISK_SCORE = 10;
 
 async function getProgramInfo(programId) {
     return await connection.getAccountInfo(new PublicKey(programId));
-}
-
-function isValidPublicKey(input) {
-    try {
-        new PublicKey(input);
-        return true;
-    } catch (e) {
-        return false;
-    }
 }
 
 function toScorePct(riskScore) {
@@ -166,24 +155,12 @@ async function auditTransaction(rawTransaction) {
     return { riskScore, warnings };
 }
 
-async function audit(input) {
-    //MOCKED
-    /*return {
-        id: input,
-        trustScore: '95',
-        riskLevel: 'Low Risk',
-        riskDesc: 'Non molti problemi, ma fai attenzione.',
-        warnings: [
-            'Transazione con molte istruzioni',
-            'Impossibile simulare la transazione',
-        ],
-    };*/
-
+async function audit(type, input) {
     let riskScore, warnings;
-    if (isValidPublicKey(input)) {
-        ({ score, warnings } = await auditProgram(input));
+    if (type === 'program') {
+        ({ riskScore, warnings } = await auditProgram(input));
     } else {
-        ({ score, warnings } = await auditTransaction(input));
+        ({ riskScore, warnings } = await auditTransaction(input));
     }
 
     return {

@@ -9,14 +9,39 @@ document.addEventListener('DOMContentLoaded', function () {
     var searchPage = document.getElementById('page2');
     document
         .getElementById('search-button')
-        .addEventListener('click', async function () {
-            const input = document.getElementById('search-input').value.trim();
+        .addEventListener('click', async function (event) {
+            // Corrected to include 'event' as a parameter
+            const input = document.getElementById('search-input');
+            const errorMessage = document.getElementById('error-message');
+
+            const searchType = document.querySelector(
+                'input[name="searchType"]:checked'
+            )?.value;
+
+            if (searchType === 'program') {
+                input.setAttribute('pattern', '^[A-Za-z0-9]{40,45}$');
+                input.title = 'Insert a valid Program ID.';
+            } else if (searchType === 'transaction') {
+                input.setAttribute('pattern', '^[A-Za-z0-9]{88}$');
+                input.title =
+                    'Insert a valid Transaction ID.';
+            }
+
+            // Validate input
+            if (!input.checkValidity()) {
+                errorMessage.textContent = input.title; // Use the title as the error message
+                errorMessage.style.display = 'block';
+                event.preventDefault(); // Prevent form submission if invalid
+                return false;
+            } else {
+                errorMessage.style.display = 'none'; // Hide error message if input is valid
+            }
 
             // Disable the button to prevent multiple clicks during processing
             this.disabled = true;
 
             // Call the async function and wait for it to complete
-            await auditContract(input);
+            await setSearchResult(searchType, input.value.trim());
 
             homePage.classList.remove('active');
             searchPage.style.display = '';
@@ -40,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document
         .getElementById('more-info-button')
         .addEventListener('click', function () {
-            window.open('https://google.com', '_blank');
+            window.open('http://rob3.live/', '_blank');
         });
 });
 
@@ -114,34 +139,45 @@ function updatePopup(feedItems) {
     });
 }
 
-async function auditContract(contractId) {
-    audit(contractId)
-        .then((contract) => {
-            // Update the DOM elements with the contract data
-            document.getElementById('contractID').textContent = contract.id;
-            document.getElementById('trustScore').textContent =
-                contract.trustScore + '%'; // assuming score is a percentage
-            document.getElementById('riskLevel').textContent =
-                contract.riskLevel;
-            document.getElementById('riskDesc').textContent = contract.riskDesc;
+async function setSearchResult(searchType, contractId) {
+    try {
+        const contract = await audit(searchType, contractId); // Ensure `audit` returns a promise
 
-            // Handle warnings dynamically
-            const warningsList = document.getElementById('warningList');
-            const warningsDiv = document.querySelector('.warnings');
-            warningsList.innerHTML = ''; // Clear existing warnings
+        // Update the DOM elements with the contract data
+        document.getElementById('contractID').textContent = contract.id;
+        updateTrustScore(contract.trustScore);
+        document.getElementById('riskLevel').textContent = contract.riskLevel;
+        document.getElementById('riskDesc').textContent = contract.riskDesc;
 
-            if (contract.warnings && contract.warnings.length > 0) {
-                contract.warnings.forEach((warning) => {
-                    const li = document.createElement('li');
-                    li.textContent = warning;
-                    warningsList.appendChild(li);
-                });
-                warningsDiv.style.display = 'block'; // Show warnings if there are any
-            } else {
-                warningsDiv.style.display = 'none'; // Hide warnings div if there are no warnings
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching contract data:', error);
-        });
+        // Handle warnings dynamically
+        const warningsList = document.getElementById('warningList');
+        const warningsDiv = document.querySelector('.warnings');
+        warningsList.innerHTML = ''; // Clear existing warnings
+
+        if (contract.warnings && contract.warnings.length > 0) {
+            contract.warnings.forEach((warning) => {
+                const li = document.createElement('li');
+                li.textContent = warning;
+                warningsList.appendChild(li);
+            });
+            warningsDiv.style.display = 'block'; // Show warnings if there are any
+        } else {
+            warningsDiv.style.display = 'none'; // Hide warnings div if there are no warnings
+        }
+    } catch (error) {
+        console.error('Error fetching contract data:', error);
+    }
+}
+
+function updateTrustScore(trustScore) {
+    const scoreElement = document.getElementById('trustScore');
+    scoreElement.textContent = trustScore + '%';
+
+    // Calculate color based on trust score
+    const red = 255 - Math.round(trustScore * 2.55); // Decreases with higher score
+    const green = Math.round(trustScore * 2.55); // Increases with higher score
+    const blue = 0; // Constant, not used in gradient
+
+    // Set the background color of the circle
+    scoreElement.style.borderColor = `rgb(${red}, ${green}, ${blue})`;
 }
