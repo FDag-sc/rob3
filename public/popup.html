@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>My Chrome Extension</title>
+        <title>Rob3 Extension</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="popup.css" />
     </head>
     <body>
         <div id="page1" class="page active">
-            <h2 class="title">Ultime Notizie</h2>
+            <h2 class="title">Latest News</h2>
             <div id="news-feed">
                 <!-- News items will be added here dynamically -->
             </div>
@@ -16,31 +16,28 @@
                 <input
                     type="text"
                     id="search-input"
-                    placeholder="Inserire contract ID..."
+                    placeholder="Insert ID..."
                     required
                 />
-                <div id="error-message" style="color: red; display: none"></div>
+                <div id="error-message"></div>
                 <div class="search-options">
-                    <label class="option">
-                        <input
-                            type="radio"
-                            id="program"
-                            name="searchType"
-                            value="program"
-                            checked
-                        />
-                        <span>Program</span>
-                    </label>
-                    <label class="option">
-                        <input
-                            type="radio"
-                            id="transaction"
-                            name="searchType"
-                            value="transaction"
-                        />
-                        <span>Transaction</span>
-                    </label>
-                    <button id="search-button" class="button">Ricerca</button>
+                    <input
+                        type="radio"
+                        id="program"
+                        name="searchType"
+                        value="program"
+                        checked
+                    />
+                    <label for="program" class="option">Program</label>
+
+                    <input
+                        type="radio"
+                        id="transaction"
+                        name="searchType"
+                        value="transaction"
+                    />
+                    <label for="transaction" class="option">Transaction</label>
+                    <button id="search-button" class="button">Search</button>
                 </div>
             </div>
         </div>
@@ -52,7 +49,7 @@
                         alt="Left Arrow"
                         class="icon"
                     />
-                    Indietro
+                    Go Back
                 </button>
             </div>
             <div class="contract-id">
@@ -74,7 +71,7 @@
                 <p id="riskDesc"></p>
             </div>
         </div>
-        <button id="more-info-button" class="button">Scopri di più</button>
+        <button id="more-info-button" class="button">Find out more...</button>
 
         <script src="popup.js"></script>
     </body>

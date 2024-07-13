@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.title = 'Insert a valid Program ID.';
             } else if (searchType === 'transaction') {
                 input.setAttribute('pattern', '^[A-Za-z0-9]{88}$');
-                input.title =
-                    'Insert a valid Transaction ID.';
+                input.title = 'Insert a valid Transaction ID.';
             }
 
             // Validate input
@@ -72,9 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Define async function to fetch RSS Feed
 async function fetchRSSFeed() {
     const parser = new DOMParser();
-    const response = await fetch(
-        'https://it.cointelegraph.com/rss/tag/blockchain'
-    );
+    const response = await fetch('https://bitcoinist.com/feed/');
     const data = await response.text();
     const xmlDoc = parser.parseFromString(data, 'application/xml');
 
@@ -144,7 +141,7 @@ async function setSearchResult(searchType, contractId) {
         const contract = await audit(searchType, contractId); // Ensure `audit` returns a promise
 
         // Update the DOM elements with the contract data
-        document.getElementById('contractID').textContent = contract.id;
+        updateId(contract.id);
         updateTrustScore(contract.trustScore);
         document.getElementById('riskLevel').textContent = contract.riskLevel;
         document.getElementById('riskDesc').textContent = contract.riskDesc;
@@ -166,6 +163,20 @@ async function setSearchResult(searchType, contractId) {
         }
     } catch (error) {
         console.error('Error fetching contract data:', error);
+    }
+}
+
+function updateId(contractId) {
+    const displayElement = document.getElementById('contractID');
+    if (contractId.length > 16) {
+        // Display first 8 and last 8 characters
+        displayElement.textContent = `${contractId.slice(
+            0,
+            8
+        )}...${contractId.slice(-8)}`;
+    } else {
+        // If the ID is not long enough, just display it as is
+        displayElement.textContent = contractId;
     }
 }
 
