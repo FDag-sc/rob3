@@ -1,6 +1,7 @@
 import { Connection, PublicKey, Transaction } from '@solana/web3.js';
 
-const SOLANA_RPC_URL = 'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
+const SOLANA_RPC_URL =
+    'https://solana-mainnet.g.alchemy.com/v2/bnPBOjC_umV9XVb-D4-RURKtfweFMhXp';
 const connection = new Connection(SOLANA_RPC_URL);
 const TOTAL_RISK_SCORE = 10;
 
@@ -18,14 +19,15 @@ function getRiskLevel(riskScore) {
     if (riskScore > 4) return 'Moderate Risk';
     if (riskScore > 2) return 'Low Risk';
     return 'Very Low Risk';
- }
+}
 
 function getRiskDesc(riskScore) {
     if (riskScore > 7)
-        return 'Attenta revisione fortemente raccomandata.';
-    if (riskScore > 4) return 'Ulteriore revisione raccomandata.';
-    if (riskScore > 2) return 'Non molti problemi, ma fai attenzione.';
-    return 'Sembra sicuro, in ogni caso verifica.';
+        return 'Proceed with extreme caution. Thorough review strongly recommended.';
+    if (riskScore > 4)
+        return 'Proceed with caution. Additional review recommended.';
+    if (riskScore > 2) return 'Generally safe, but always be cautious.';
+    return 'Seems safe, but always verify.';
 }
 
 async function auditProgram(programId) {
@@ -37,20 +39,20 @@ async function auditProgram(programId) {
     // 1. Verifica l'esistenza del programma
     if (!programInfo) {
         riskScore += 10;
-        warnings.push('Programma non trovato');
+        warnings.push('Program not found');
         return { riskScore, warnings };
     }
 
     // 2. Dimensione del programma
     if (programInfo.data.length < 100) {
         riskScore += 2;
-        warnings.push('Dimensione del programma molto ridotta');
+        warnings.push('Unusually small program size');
     }
 
     // 3. Eseguibilità
     if (!programInfo.executable) {
         riskScore += 3;
-        warnings.push('Il programma non è eseguibile');
+        warnings.push('Program is not executable');
     }
 
     // 4. Età del programma
@@ -60,7 +62,7 @@ async function auditProgram(programId) {
     if (programAge < 86400) {
         // meno di un giorno
         riskScore += 2;
-        warnings.push('Programma molto recente');
+        warnings.push('Very new program');
     }
 
     // 5. Frequenza delle transazioni
@@ -72,7 +74,7 @@ async function auditProgram(programId) {
     if (txFrequency > 100) {
         // più di 100 tx al giorno
         riskScore += 1;
-        warnings.push('Alta frequenza di transazioni');
+        warnings.push('High transaction frequency');
     }
 
     // 6. Saldo del programma
@@ -80,7 +82,7 @@ async function auditProgram(programId) {
     if (balance > 1000 * 1e9) {
         // più di 1000 SOL
         riskScore += 2;
-        warnings.push('Saldo del programma molto elevato');
+        warnings.push('Large balance in program account');
     }
 
     return { riskScore, warnings };
@@ -95,13 +97,13 @@ async function auditTransaction(rawTransaction) {
     // 1. Numero di istruzioni
     if (transaction.instructions.length > 5) {
         riskScore += 2;
-        warnings.push('Transazione con molte istruzioni');
+        warnings.push('Complex transaction (many instructions)');
     }
 
     // 2. Numero di firmatari
     if (transaction.signatures.length > 1) {
         riskScore += 2;
-        warnings.push('Transazione con più firmatari');
+        warnings.push('Multiple signers');
     }
 
     // 3. Analisi delle istruzioni
@@ -134,7 +136,7 @@ async function auditTransaction(rawTransaction) {
         const simulation = await connection.simulateTransaction(transaction);
         if (simulation.value.err) {
             riskScore += 3;
-            warnings.push('Simulazione transazione fallita');
+            warnings.push('Transaction simulation failed');
         }
 
         // Analizza i cambiamenti di saldo dalla simulazione
@@ -144,12 +146,12 @@ async function auditTransaction(rawTransaction) {
             ).length;
             if (largeBalanceChanges > 0) {
                 riskScore += 3;
-                warnings.push('Simulazione con elevati spostamenti di saldo');
+                warnings.push('Large balance changes detected');
             }
         }
     } catch (error) {
         riskScore += 6;
-        warnings.push('Impossibile simulare la transazione');
+        warnings.push('Unable to simulate transaction');
     }
 
     return { riskScore, warnings };
@@ -172,5 +174,5 @@ async function audit(type, input) {
     };
 }
 
-//ESEMPIO 9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
 export { audit };
+//ESEMPIO 9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
