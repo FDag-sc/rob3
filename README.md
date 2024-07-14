@@ -15,6 +15,12 @@ Rob3 is a 'Web 2.5 Checker', a new browser extension designed to protect users t
 
 [**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
 
+
+## Credits
+- [Simmaco Cocchiaro](https://www.linkedin.com/in/simmaco-cocchiaro-1a9280258/)
+- [Francesco D'Agliano](https://www.linkedin.com/in/francesco-d-agliano-64295a236/)
+- [Davide Morano](https://www.linkedin.com/in/moranodavide/)
+- [Vincenzo Pio Rauccio](https://www.linkedin.com/in/vincenzo-rauccio/)
 ---
 
 This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
