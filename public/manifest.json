@@ -1,15 +1,14 @@
 {
-  "manifest_version": 3,
-  "name": "Rob3",
-  "version": "0.1.0",
-  "description": "Web 2.5 Checker",
-  "action": {
-    "default_title": "Rob3",
-    "default_popup": "popup.html",
-    "default_icon": "icons/icon.png",
-    "default_width": 360,
-    "default_height": 400
-  },
-  "host_permissions": ["*://*/"],
-  "permissions": ["tabs"]
+    "manifest_version": 3,
+    "name": "Rob3",
+    "version": "0.1.0",
+    "description": "Web 2.5 Checker",
+    "action": {
+        "default_title": "Rob3",
+        "default_popup": "popup.html",
+        "default_icon": "icons/icon.png",
+        "default_width": 360,
+        "default_height": 400
+    },
+    "host_permissions": ["https://bitcoinist.com/"]
 }
