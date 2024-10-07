@@ -1,0 +1,116 @@
+{
+    "extensionTitle": {
+        "message": "Rob3 Extension"
+    },
+    "searchPlaceholder": {
+        "message": "Insert ID..."
+    },
+    "programLabel": {
+        "message": "Program"
+    },
+    "transactionLabel": {
+        "message": "Transaction"
+    },
+    "searchButton": {
+        "message": "Search"
+    },
+    "goBack": {
+        "message": "Go Back"
+    },
+    "contractIDTitle": {
+        "message": "ID"
+    },
+    "trustScoreTitle": {
+        "message": "Trust Score"
+    },
+    "warningsTitle": {
+        "message": "Warnings"
+    },
+    "riskLevelTitle": {
+        "message": "Risk Level"
+    },
+    "riskDesc": {
+        "message": "Risk Description"
+    },
+    "findOutMoreButton": {
+        "message": "Find out more..."
+    },
+    "programError": {
+        "message": "Insert a valid Program ID."
+    },
+    "transactionError": {
+        "message": "Insert a valid Transaction ID."
+    },
+    "highRisk": {
+        "message": "High Risk"
+    },
+    "mediumRisk": {
+        "message": "Moderate Risk"
+    },
+    "lowRisk": {
+        "message": "Low Risk"
+    },
+    "noRisk": {
+        "message": "Very Low Risk"
+    },
+    "highRiskDesc": {
+        "message": "Careful review strongly recommended."
+    },
+    "mediumRiskDesc": {
+        "message": "Further review recommended."
+    },
+    "lowRiskDesc": {
+        "message": "Not many issues, but exercise caution."
+    },
+    "noRiskDesc": {
+        "message": "Seems safe, but always verify."
+    },
+    "war_prog_notFound": {
+        "message": "Program not found"
+    },
+    "war_prog_size": {
+        "message": "Very small program size"
+    },
+    "war_prog_notExec": {
+        "message": "Program is not executable"
+    },
+    "war_prog_recent": {
+        "message": "Very recent program"
+    },
+    "war_prog_highTrans": {
+        "message": "High transaction frequency"
+    },
+    "war_prog_highBal": {
+        "message": "Very high program balance"
+    },
+    "war_prog_error": {
+        "message": "Error auditing program: "
+    },
+    "war_trans_notFound": {
+        "message": "Transaction not found"
+    },
+    "war_trans_instr": {
+        "message": "Transaction with many instructions"
+    },
+    "war_trans_sign": {
+        "message": "Transaction with multiple signers"
+    },
+    "war_trans_bal": {
+        "message": "Transaction with large balance shifts"
+    },
+    "war_trans_fail": {
+        "message": "Transaction simulation failed"
+    },
+    "war_trans_logs": {
+        "message": "Suspicious log messages detected"
+    },
+    "war_trans_error": {
+        "message": "Error processing transaction: "
+    },
+    "audit_fail": {
+        "message": "Audit failed: "
+    },
+    "audit_desc": {
+        "message": "Error occurred during audit"
+    }
+}

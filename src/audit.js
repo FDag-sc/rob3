@@ -24,18 +24,18 @@ function toScorePct(riskScore) {
 
 // Determine risk level based on score
 function getRiskLevel(riskScore) {
-    if (riskScore > 7) return 'High Risk';
-    if (riskScore > 4) return 'Moderate Risk';
-    if (riskScore > 2) return 'Low Risk';
-    return 'Very Low Risk';
+    if (riskScore > 7) return chrome.i18n.getMessage('highRisk');
+    if (riskScore > 4) return chrome.i18n.getMessage('mediumRisk');
+    if (riskScore > 2) return chrome.i18n.getMessage('lowRisk');
+    return chrome.i18n.getMessage('noRisk');
 }
 
 // Provide risk description based on score
 function getRiskDesc(riskScore) {
-    if (riskScore > 7) return 'Careful review strongly recommended.';
-    if (riskScore > 4) return 'Further review recommended.';
-    if (riskScore > 2) return 'Not many issues, but exercise caution.';
-    return 'Seems safe, but always verify.';
+    if (riskScore > 7) return chrome.i18n.getMessage('highRiskDesc');
+    if (riskScore > 4) return chrome.i18n.getMessage('mediumRiskDesc');
+    if (riskScore > 2) return chrome.i18n.getMessage('lowRiskDesc');
+    return chrome.i18n.getMessage('noRiskDesc');
 }
 
 // Function for program audit
@@ -49,20 +49,20 @@ async function auditProgram(programId) {
         // 1. Verifica l'esistenza del programma
         if (!programInfo) {
             riskScore += 10;
-            warnings.push('Program not found');
+            warnings.push(chrome.i18n.getMessage('war_prog_notFound'));
             return { riskScore, warnings };
         }
 
         // 2. Dimensione del programma
         if (programInfo.data.length < 100) {
             riskScore += 2;
-            warnings.push('Very small program size');
+            warnings.push(chrome.i18n.getMessage('war_prog_size'));
         }
 
         // 3. Eseguibilità
         if (!programInfo.executable) {
             riskScore += 3;
-            warnings.push('Program is not executable');
+            warnings.push(chrome.i18n.getMessage('war_prog_notExec'));
         }
 
         // 4. Età del programma
@@ -72,7 +72,7 @@ async function auditProgram(programId) {
         if (programAge < 86400) {
             // meno di un giorno
             riskScore += 2;
-            warnings.push('Very recent program');
+            warnings.push(chrome.i18n.getMessage('war_prog_recent'));
         }
 
         // 5. Frequenza delle transazioni
@@ -84,7 +84,7 @@ async function auditProgram(programId) {
         if (txFrequency > 100) {
             // più di 100 tx al giorno
             riskScore += 1;
-            warnings.push('High transaction frequency');
+            warnings.push(chrome.i18n.getMessage('war_prog_highTrans'));
         }
 
         // 6. Saldo del programma
@@ -92,12 +92,12 @@ async function auditProgram(programId) {
         if (balance > 1000 * 1e9) {
             // più di 1000 SOL
             riskScore += 2;
-            warnings.push('Very high program balance');
+            warnings.push(chrome.i18n.getMessage('war_prog_highBal'));
         }
     } catch (error) {
         console.error('Error in auditProgram:', error);
         riskScore = 10;
-        warnings.push('Error auditing program: ' + error.message);
+        warnings.push(chrome.i18n.getMessage('war_prog_error') + error.message);
     }
 
     return { riskScore, warnings };
@@ -118,7 +118,7 @@ async function auditTransaction(transactionSignature) {
 
         if (!transaction) {
             riskScore += 10;
-            warnings.push('Transaction not found');
+            warnings.push(chrome.i18n.getMessage('war_trans_notFound'));
             return { riskScore, warnings };
         }
 
@@ -127,14 +127,14 @@ async function auditTransaction(transactionSignature) {
             transaction.transaction?.message?.instructions?.length;
         if (instructionsLength && instructionsLength > 5) {
             riskScore += 2;
-            warnings.push('Transaction with many instructions');
+            warnings.push(chrome.i18n.getMessage('war_trans_instr'));
         }
 
         // 2. Numero di firmatari
         const signaturesLength = transaction.transaction?.signatures?.length;
         if (signaturesLength && signaturesLength > 1) {
             riskScore += 2;
-            warnings.push('Transaction with multiple signers');
+            warnings.push(chrome.i18n.getMessage('war_trans_sign'));
         }
 
         // 3. Analisi delle istruzioni
@@ -172,13 +172,13 @@ async function auditTransaction(transactionSignature) {
             ).length;
             if (largeBalanceChanges > 0) {
                 riskScore += 3;
-                warnings.push('Transaction with large balance shifts');
+                warnings.push(chrome.i18n.getMessage('war_trans_bal'));
             }
         }
 
         if (transaction.meta?.err) {
             riskScore += 3;
-            warnings.push('Transaction simulation failed');
+            warnings.push(chrome.i18n.getMessage('war_trans_fail'));
         }
 
         if (transaction.meta?.logMessages) {
@@ -190,13 +190,15 @@ async function auditTransaction(transactionSignature) {
             );
             if (suspiciousLogs.length > 0) {
                 riskScore += 2;
-                warnings.push('Suspicious log messages detected');
+                warnings.push(chrome.i18n.getMessage('war_trans_logs'));
             }
         }
     } catch (error) {
         console.error('Error in auditTransaction:', error);
         riskScore = 10;
-        warnings.push('Error processing transaction: ' + error.message);
+        warnings.push(
+            chrome.i18n.getMessage('war_trans_error') + error.message
+        );
     }
 
     return { riskScore, warnings };
@@ -228,9 +230,9 @@ async function audit(type, input) {
         return {
             id: input,
             trustScore: '0',
-            riskLevel: 'High Risk',
-            riskDesc: 'Error occurred during audit',
-            warnings: ['Audit failed: ' + error.message],
+            riskLevel: chrome.i18n.getMessage('highRisk'),
+            riskDesc: chrome.i18n.getMessage('audit_desc'),
+            warnings: [chrome.i18n.getMessage('audit_fail') + error.message],
         };
     }
 }

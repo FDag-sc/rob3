@@ -1,6 +1,42 @@
 import { audit } from './audit.js';
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Set <html> lang attribute based on the user's browser locale
+    const userLang = chrome.i18n.getUILanguage();
+    document.documentElement.setAttribute('lang', userLang);
+
+    // Page 1
+    document
+        .getElementById('search-input')
+        .setAttribute(
+            'placeholder',
+            chrome.i18n.getMessage('searchPlaceholder')
+        );
+    document.getElementById('program-label').innerText =
+        chrome.i18n.getMessage('programLabel');
+    document.getElementById('transaction-label').innerText =
+        chrome.i18n.getMessage('transactionLabel');
+    document.getElementById('search-button').innerText =
+        chrome.i18n.getMessage('searchButton');
+
+    // Page 2
+    document.getElementById('goBack-text').innerText =
+        chrome.i18n.getMessage('goBack');
+    document.getElementById('contractID-title').innerText =
+        chrome.i18n.getMessage('contractIDTitle');
+    document.getElementById('trustScore-title').innerText =
+        chrome.i18n.getMessage('trustScoreTitle');
+    document.getElementById('warnings-title').innerText =
+        chrome.i18n.getMessage('warningsTitle');
+    document.getElementById('riskLevel').innerText =
+        chrome.i18n.getMessage('riskLevelTitle');
+    document.getElementById('riskDesc').innerText =
+        chrome.i18n.getMessage('riskDesc');
+
+    // Find out more button
+    document.getElementById('more-info-button').innerText =
+        chrome.i18n.getMessage('findOutMoreButton');
+
     (async () => {
         const feedItems = await fetchRSSFeed();
         updatePopup(feedItems);
@@ -20,10 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (searchType === 'program') {
                 input.setAttribute('pattern', '^[A-Za-z0-9]{40,45}$');
-                input.title = 'Insert a valid Program ID.';
+                input.title = chrome.i18n.getMessage('programError');
             } else if (searchType === 'transaction') {
                 input.setAttribute('pattern', '^[A-Za-z0-9]{80,90}$');
-                input.title = 'Insert a valid Transaction ID.';
+                input.title = chrome.i18n.getMessage('transactionError');
             }
 
             // Validate input
@@ -71,7 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
 // Define async function to fetch RSS Feed
 async function fetchRSSFeed() {
     const parser = new DOMParser();
-    const response = await fetch('https://bitcoinist.com/feed/');
+    const userLang = chrome.i18n.getUILanguage();
+
+    // Set the RSS feed link based on locale
+    const rssLink =
+        userLang === 'it'
+            ? 'https://it.cointelegraph.com/rss/tag/regulation' // Italian RSS feed link
+            : 'https://bitcoinist.com/feed/';
+    const response = await fetch(rssLink);
     const data = await response.text();
     const xmlDoc = parser.parseFromString(data, 'application/xml');
 

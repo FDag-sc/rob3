@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8" />
-        <title>Rob3 Extension</title>
+        <title>__MSG_extensionTitle__</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="popup.css" />
     </head>
     <body>
+        <!-- Page 1 -->
         <div id="page1" class="page active">
-            <h2 class="title">Latest News</h2>
-            <div id="news-feed">
-                <!-- News items will be added here dynamically -->
-            </div>
+            <img
+                id="title-image"
+                src="icons/logo.png"
+                alt="Logo"
+                class="title-image"
+            />
+            <div id="news-feed"></div>
+            <!-- Dynamic News Items -->
             <div class="search-container">
-                <input
-                    type="text"
-                    id="search-input"
-                    placeholder="Insert ID..."
-                    required
-                />
+                <input type="text" id="search-input" required />
                 <div id="error-message"></div>
                 <div class="search-options">
                     <input
@@ -28,7 +28,11 @@
                         value="program"
                         checked
                     />
-                    <label for="program" class="option">Program</label>
+                    <label
+                        for="program"
+                        id="program-label"
+                        class="option"
+                    ></label>
 
                     <input
                         type="radio"
@@ -36,42 +40,50 @@
                         name="searchType"
                         value="transaction"
                     />
-                    <label for="transaction" class="option">Transaction</label>
-                    <button id="search-button" class="button">Search</button>
+                    <label
+                        for="transaction"
+                        id="transaction-label"
+                        class="option"
+                    ></label>
+
+                    <button id="search-button" class="button"></button>
                 </div>
             </div>
         </div>
+
+        <!-- Page 2 -->
         <div id="page2" class="page">
             <div class="header">
                 <button id="goBack" class="button">
                     <img
                         src="icons/left-arrow.svg"
-                        alt="Left Arrow"
+                        alt="__MSG_goBack__"
                         class="icon"
                     />
-                    Go Back
+                    <span id="goBack-text"></span>
                 </button>
             </div>
             <div class="contract-id">
-                <h2>ID</h2>
+                <h2 id="contractID-title"></h2>
                 <p id="contractID"></p>
             </div>
             <div class="trust-score">
-                <h2>Trust Score</h2>
+                <h2 id="trustScore-title"></h2>
                 <div id="trustScore" class="circle"></div>
             </div>
             <div class="warnings">
-                <h2>Warnings</h2>
-                <ul id="warningList">
-                    <!-- Dynamic warnings will be appended here -->
-                </ul>
+                <h2 id="warnings-title"></h2>
+                <ul id="warningList"></ul>
+                <!-- Dynamic warnings -->
             </div>
             <div class="description">
                 <h2 id="riskLevel"></h2>
                 <p id="riskDesc"></p>
             </div>
         </div>
-        <button id="more-info-button" class="button">Find out more...</button>
+
+        <!-- Find out more button -->
+        <button id="more-info-button" class="button"></button>
 
         <script src="popup.js"></script>
     </body>

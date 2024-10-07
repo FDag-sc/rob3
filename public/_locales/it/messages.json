@@ -1,0 +1,116 @@
+{
+    "extensionTitle": {
+        "message": "Rob3 Extension"
+    },
+    "searchPlaceholder": {
+        "message": "Inserisci ID..."
+    },
+    "programLabel": {
+        "message": "Program"
+    },
+    "transactionLabel": {
+        "message": "Transazione"
+    },
+    "searchButton": {
+        "message": "Cerca"
+    },
+    "goBack": {
+        "message": "Torna Indietro"
+    },
+    "contractIDTitle": {
+        "message": "ID"
+    },
+    "trustScoreTitle": {
+        "message": "Trust Score"
+    },
+    "warningsTitle": {
+        "message": "Attenzione"
+    },
+    "riskLevelTitle": {
+        "message": "Livello di Rischio"
+    },
+    "riskDesc": {
+        "message": "Descrizione del Rischio"
+    },
+    "findOutMoreButton": {
+        "message": "Scopri di più..."
+    },
+    "programError": {
+        "message": "Inserire un Program ID valido."
+    },
+    "transactionError": {
+        "message": "Inserire un Transaction ID valido."
+    },
+    "highRisk": {
+        "message": "Alto Rischio"
+    },
+    "mediumRisk": {
+        "message": "Rischio Moderato"
+    },
+    "lowRisk": {
+        "message": "Basso Rischio"
+    },
+    "noRisk": {
+        "message": "Rischio Molto Basso"
+    },
+    "highRiskDesc": {
+        "message": "Attenta revisione fortemente racomandata."
+    },
+    "mediumRiskDesc": {
+        "message": "Approfondire revisione."
+    },
+    "lowRiskDesc": {
+        "message": "Non molti problemi, fare attenzione."
+    },
+    "noRiskDesc": {
+        "message": "Sembra sicuro, verifica sempre."
+    },
+    "war_prog_notFound": {
+        "message": "Program non trovato"
+    },
+    "war_prog_size": {
+        "message": "Dimensione program molto piccola"
+    },
+    "war_prog_notExec": {
+        "message": "Program non eseguibile"
+    },
+    "war_prog_recent": {
+        "message": "Program molto recente"
+    },
+    "war_prog_highTrans": {
+        "message": "Alta frequenza di transazioni"
+    },
+    "war_prog_highBal": {
+        "message": "Bilancio molto alto"
+    },
+    "war_prog_error": {
+        "message": "Errore nell'audit: "
+    },
+    "war_trans_notFound": {
+        "message": "Transazione non trovata"
+    },
+    "war_trans_instr": {
+        "message": "Transazione con molte istruzioni"
+    },
+    "war_trans_sign": {
+        "message": "Transazione con molteplici signers"
+    },
+    "war_trans_bal": {
+        "message": "Transazione con alte variazioni di bilancio"
+    },
+    "war_trans_fail": {
+        "message": "Similazione transazione fallita"
+    },
+    "war_trans_logs": {
+        "message": "Messaggi di Log sospetti"
+    },
+    "war_trans_error": {
+        "message": "Errore nel processare la transazione: "
+    },
+    "audit_fail": {
+        "message": "Errore nell'audit: "
+    },
+    "audit_desc": {
+        "message": "Errore durante l'audit"
+    }
+}
