@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Rob3",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Web 2.5 Checker",
     "default_locale": "en",
     "action": {

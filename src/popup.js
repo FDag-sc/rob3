@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document
         .getElementById('more-info-button')
         .addEventListener('click', function () {
-            window.open('http://rob3.live/', '_blank');
+            window.open('http://rob3.xyz/', '_blank');
         });
 });
 
