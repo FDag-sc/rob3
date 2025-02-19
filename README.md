@@ -13,7 +13,7 @@ Rob3 is a 'Web 2.5 Checker', a new browser extension designed to protect users t
 
 ## Install
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
+[**Chrome** extension](https://chromewebstore.google.com/detail/rob3/cpkejagemeohbadaeabcoihaopoedfkj) 
 
 
 ## Credits
